@@ -1,0 +1,22 @@
+ ----------------create auth insid module------------------->
+
+nest generate module modules/auth
+nest generate service modules/auth
+nest generate controller modules/auth
+
+
+-----------------create user insid module ----------------------->
+
+
+nest generate module modules/users
+nest generate service modules/users
+nest generate controller modules/users
+
+
+
+---------------------create products in module ------------------->
+
+nest generate module modules/products
+nest generate service modules/products
+nest generate controller modules/products
+
