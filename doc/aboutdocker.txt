@@ -1,0 +1,104 @@
+docker-compose -f docker-compose.yml up --build |=> This is for local development — when you still want live code updates (hot reload).
+{
+docker-compose → uses the YAML config file to manage multiple containers (e.g., NestJS + DB)
+-f docker-compose.yml → specify your dev config file
+--build → rebuild images after code or dependency changes
+Without -d → runs in the foreground (you can see logs directly in the terminal)
+}
+
+----------------------------------------------------------------------------------------------------------->
+
+docker-compose -f docker-compose.yml up --build -d  |=> If you want to run in the background (detached mode):
+
+
+docker-compose logs -f  |=> Then check log
+
+
+---------------------------------------------------------------------------------------------------------->
+
+
+docker-compose -f docker-compose.prod.yml up --build -d  |=> This is for deployment or production-ready builds — no auto-refresh, optimized image.
+
+{
+ Uses the production Dockerfile (Dockerfile.prod)
+-d → background mode (recommended for servers)
+It will start your NestJS app and any linked services (e.g., PostgreSQL) in production mode
+}
+
+----------------------------If you change your code or Docker configuration completely------------------------->
+
+
++ Sometimes you need to remove old containers and images before rebuilding.
+
+docker-compose down --rmi all --volumes --remove-orphans |=>
+docker-compose -f docker-compose.yml up --build -d       |=>
+
+
+--------------------------If you configured the database (TypeORM + PostgreSQL)--------------->
+
+npm i typeorm @nestjs/typeorm pg 
+or 
+npm i typeorm @nestjs/typeorm
+npm i pg # if you are using PostgreSQL
+
+---------------------------------------------------------------------------------------------->
+remove all container and run
+docker-compose -f docker-compose.yml up --build -d |=> only development not run prod ready
+
+
+--------------------------------------------------------------------------------------------->
+
+And updated your docker-compose.yml to include db service (PostgreSQL container), should 
+
+
+docker-compose -f docker-compose.yml up --build -d
+
+docker ps |=> for check image run
+
+
+
+
+
+
+
+
+-----------------------------------how stop start------------------------------->
+docker-compose -f docker-compose.yml stop
+docker-compose -f docker-compose.yml start
+
+-------------------------------------------------------------------------------->
+{
+Stop and Remove Containers (recommended for rebuild)
+If you want to completely stop and remove the running containers (but keep images and data):
+}
+docker-compose -f docker-compose.yml down
+
+This is what most developers use after development — it shuts down all running services cleanly.
+
+
+------------------------------------------------------------------------------>
+{
+Stop, Remove, and Clean Everything (containers, images, volumes)
+If you want to fully reset your environment:
+}
+
+docker-compose -f docker-compose.yml down --rmi all --volumes --remove-orphans
+
+{
+--rmi all → remove images built by compose
+--volumes → remove database/data volumes
+--remove-orphans → remove any leftover containers not defined in compose file
+}
+
+docker ps |=> check 
+
+docker stop <container_id>  |=> for spacific container stop
+docker rm <container_id>    |=> for spacific container stop
+
+
+
+
+
+
+
+

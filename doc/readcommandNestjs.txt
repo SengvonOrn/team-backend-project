@@ -20,3 +20,8 @@ nest generate module modules/products
 nest generate service modules/products
 nest generate controller modules/products
 
+---------------------------make entity  by no spect file----------------------------->
+
+
+nest g class modules/users/entities/user.entity --no-spec
+
