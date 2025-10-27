@@ -1,0 +1,10 @@
+mkdir -p src/config
+mkdir -p src/common/decorators
+mkdir -p src/common/guards
+mkdir -p src/common/interceptors
+mkdir -p src/common/pipes
+mkdir -p src/common/filters
+mkdir -p src/common/utils
+
+
+

@@ -1,19 +1,46 @@
-FROM node:22
+# # -------------------------
+# # 1️⃣ Build Stage
+# # -------------------------
+# FROM node:22 AS builder
 
-# 2️⃣ Set the working directory inside the container
+# # Set working directory
+# WORKDIR /usr/src/app
+
+# # Copy package files first (for caching)
+# COPY package*.json ./
+# COPY prisma ./prisma
+
+# # Install dependencies
+# RUN npm install
+
+# # Copy all project files
+# COPY . .
+
+# # Generate Prisma client (dummy env to allow generation)
+# RUN DATABASE_URL="postgresql://postgres:password@localhost:5432/nest_database" npx prisma generate
+
+# EXPOSE 3000
+
+# CMD ["npm", "run", "start:dev"]
+
+
+FROM node:22 AS builder
+
 WORKDIR /usr/src/app
 
-# 5️⃣ Copy the rest of the project files
-# COPY ./src . or 
-#  FOR EVERYTHING ELSE
-COPY . . 
-# 3️⃣ Install dependencies
+# Copy package files for caching
+COPY package*.json ./
+COPY prisma ./prisma
+
+# Install dependencies
 RUN npm install
 
+# Copy all project files
+COPY . .
 
-# 7️⃣ Expose port 3000 (the NestJS default port)
+# Generate Prisma client (no real DB connection needed)
+RUN npx prisma generate
+
 EXPOSE 3000
 
-
-# 4️⃣ Build the project
 CMD ["npm", "run", "start:dev"]

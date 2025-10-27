@@ -4,9 +4,21 @@ import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { ProductsModule } from './modules/products/products.module';
+import { StoresModule } from './modules/stores/stores.module';
+import { OrdersModule } from './modules/orders/orders.module';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, ProductsModule],
+  imports: [
+    AuthModule,
+    UsersModule,
+    ProductsModule,
+    StoresModule,
+    OrdersModule,
+    CategoriesModule,
+    PaymentsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,0 +1,8 @@
+npx prisma generate --schema=src/database/prisma/schema.prisma  |=> 
+
+
+npx prisma migrate dev --name init_db
+
+
+
+Remove-Item -Recurse -Force prisma

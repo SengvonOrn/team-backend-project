@@ -1,42 +1,42 @@
 services:
-  # NestJS API service
   nestjs_api:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: nestjs_api
     ports:
-      - "3000:3000"
-    environment:
-      PORT: 3000
-      NODE_ENV: development
-      DATABASE_HOST: nestjs_db
-      DATABASE_PORT: 5432
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: password
-      DATABASE_NAME: nest_database
+      - '3000:3000'
+    env_file:
+      - .env
     volumes:
       - ./src:/usr/src/app/src
+      - ./prisma:/usr/src/app/prisma
     depends_on:
       - nestjs_db
-    # command for development
-    # command: npm run start:dev
-    # command for production
-    # command: npm run start:prod
-  # PostgreSQL service
+
+  # 🐘 PostgreSQL Database
   nestjs_db:
-    image: postgres:latest       # pinned version
+    image: postgres:15.5
     container_name: nestjs_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: nest_database
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
 
-# Top-level volumes
+    #---------------enable when we want with host access
+    # networks:
+    #   - nest_network
+
 volumes:
   pgdata:
+#------------------------For host---------------------->
+
+# 🌐 Shared network between services (and accessible to host)
+# networks:
+#   nest_network:
+#     driver: bridge

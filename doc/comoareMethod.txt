@@ -1,0 +1,5 @@
+⚖️ Compare Methods
+Method	Description	Pros	Cons	Best For
+Run Prisma from host (localhost)	Use npx prisma migrate dev on your local machine	Easier for debugging and editing schema quickly	Must have localhost:5432 DB port open	Early development / prototyping
+Run Prisma inside Docker container	Use docker compose exec nestjs_api npx prisma migrate dev	Works exactly like production, same env	Slightly slower to run	Team development & production
+Auto-run in Dockerfile or entrypoint	Prisma runs automatically when container starts	Always in sync, zero manual steps	Less control (can slow down rebuilds)	CI/CD pipelines, testing environments
