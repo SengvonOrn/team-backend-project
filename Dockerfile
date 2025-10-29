@@ -38,8 +38,8 @@ RUN npm install
 # Copy all project files
 COPY . .
 
-# Generate Prisma client (no real DB connection needed)
-RUN npx prisma generate
+# Generate Prisma client (no real DB connection needed)  |-| To avoid running those manually each time, you can add them into your Dockerfile or docker-compose OR IN dOCKERCOMPOSE
+RUN npx prisma generate  
 
 EXPOSE 3000
 

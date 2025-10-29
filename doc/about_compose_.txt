@@ -1,0 +1,23 @@
+
++ Add to docker-compose.yml
+
+command: >
+  sh -c "npx prisma generate &&
+         npx prisma migrate deploy &&
+         npm run start:dev"
++ That way, when the container starts, it:
+
+1- Generates the Prisma client.
+
+2- Applies any new migrations.
+
+3- Starts your NestJS server automatically.
+
+
+--------------------------------------------------->
+npx prisma generate   |=> After schema changes |-> Builds Prisma client
+
+npx prisma migrate dev --name init_schema      |=> After creating/updating tables -> Applies DB structure
+
+docker compose up --build -d                   |=> Starts app + DB  -> Runs containers, not migrations
+

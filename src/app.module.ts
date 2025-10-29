@@ -8,6 +8,7 @@ import { StoresModule } from './modules/stores/stores.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { PaymentsModule } from './modules/payments/payments.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { PaymentsModule } from './modules/payments/payments.module';
     OrdersModule,
     CategoriesModule,
     PaymentsModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

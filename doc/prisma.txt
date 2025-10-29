@@ -6,3 +6,19 @@ npx prisma migrate dev --name init_db
 
 
 Remove-Item -Recurse -Force prisma
+
+
+-------------------------------------------------------------------->
++ Anytime you change your Prisma schema, you need to run:-
+  npx prisma generate
+
+
+
+---------after can run this comment for docker containner----------->
+
+docker exec -it nestjs_api npx prisma generate
+
+docker exec -it nestjs_api npx prisma migrate dev --name make_name_optional  |=> for update name to name?
+
+
+------------------------------------------------------------------->

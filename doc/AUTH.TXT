@@ -1,0 +1,21 @@
+npm i add -D @types/passport-jwt @types/passport-local
+
+npm install @nestjs/jwt @nestjs/passport passport passport-local passport-jwt bcrypt
+npm install -D @types/passport-local @types/passport-jwt @types/bcrypt
+
+
+# Prisma packages
+npm install @prisma/client
+
+
+-------------------------------------------------------------->
+
+npm i --save class-validator class-transformer
+
+
+-------------------------------------------------------------->
+npm install @nestjs/config
+
+
+
+

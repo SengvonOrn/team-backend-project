@@ -15,8 +15,6 @@ docker-compose logs -f  |=> Then check log
 
 
 ---------------------------------------------------------------------------------------------------------->
-
-
 docker-compose -f docker-compose.prod.yml up --build -d  |=> This is for deployment or production-ready builds — no auto-refresh, optimized image.
 
 {
@@ -24,7 +22,6 @@ docker-compose -f docker-compose.prod.yml up --build -d  |=> This is for deploym
 -d → background mode (recommended for servers)
 It will start your NestJS app and any linked services (e.g., PostgreSQL) in production mode
 }
-
 ----------------------------If you change your code or Docker configuration completely------------------------->
 
 
@@ -55,13 +52,6 @@ docker-compose -f docker-compose.yml up --build -d
 
 docker ps |=> for check image run
 
-
-
-
-
-
-
-
 -----------------------------------how stop start------------------------------->
 docker-compose -f docker-compose.yml stop
 docker-compose -f docker-compose.yml start
@@ -89,9 +79,7 @@ docker-compose -f docker-compose.yml down --rmi all --volumes --remove-orphans
 --volumes → remove database/data volumes
 --remove-orphans → remove any leftover containers not defined in compose file
 }
-
 docker ps |=> check 
-
 docker stop <container_id>  |=> for spacific container stop
 docker rm <container_id>    |=> for spacific container stop
 
