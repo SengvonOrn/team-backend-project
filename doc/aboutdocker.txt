@@ -1,4 +1,5 @@
-docker-compose -f docker-compose.yml up --build |=> This is for local development — when you still want live code updates (hot reload).
+docker-compose -f docker-compose.yml up --build |=>
+This is for local development — when you still want live code updates (hot reload).
 {
 docker-compose → uses the YAML config file to manage multiple containers (e.g., NestJS + DB)
 -f docker-compose.yml → specify your dev config file
@@ -40,6 +41,7 @@ npm i pg # if you are using PostgreSQL
 
 ---------------------------------------------------------------------------------------------->
 remove all container and run
+
 docker-compose -f docker-compose.yml up --build -d |=> only development not run prod ready
 
 
@@ -73,7 +75,6 @@ If you want to fully reset your environment:
 }
 
 docker-compose -f docker-compose.yml down --rmi all --volumes --remove-orphans
-
 {
 --rmi all → remove images built by compose
 --volumes → remove database/data volumes

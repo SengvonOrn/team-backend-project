@@ -1,24 +1,28 @@
-npx prisma generate --schema=src/database/prisma/schema.prisma  |=> 
+------------------------in local-------------------------
+# 1. Generate Prisma Client
+npx prisma generate --schema=src/database/prisma/schema.prisma
 
-
+# 2. Apply initial migration (create tables)
 npx prisma migrate dev --name init_db
 
-
-
+# 3. Optional: Remove Prisma folder if you want to reset everything
 Remove-Item -Recurse -Force prisma
 
+# 4. Anytime you change your schema.prisma, regenerate the client
+npx prisma generate
 
--------------------------------------------------------------------->
-+ Anytime you change your Prisma schema, you need to run:-
-  npx prisma generate
+----------------------for asyn in docker---------------------------->
 
+# 1. Apply migration inside Docker (create tables)
+docker exec -it nestjs_api npx prisma migrate dev --name init_db
 
-
----------after can run this comment for docker containner----------->
-
+# 2. Generate Prisma client inside Docker
 docker exec -it nestjs_api npx prisma generate
 
-docker exec -it nestjs_api npx prisma migrate dev --name make_name_optional  |=> for update name to name?
+# 3. For schema updates (e.g., make `name` optional)
+docker exec -it nestjs_api npx prisma migrate dev --name make_name_optional
 
+# 4. After migration, always regenerate Prisma client inside Docker
+docker exec -it nestjs_api npx prisma generate
 
 ------------------------------------------------------------------->

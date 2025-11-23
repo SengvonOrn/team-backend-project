@@ -6,7 +6,6 @@ import { RegisterDto } from './dto/register.dto';
 import { TokenPayload } from './types/oken-payload.type';
 import { Prisma, Role } from '@prisma/client';
 import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -45,9 +44,6 @@ export class AuthService {
     return safe;
   }
 
-
-
-
   
   async login(user: { id: number; email: string }) {
     const payload: TokenPayload = { sub: user.id, email: user.email };
@@ -55,6 +51,9 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
+
+
+
 
   // used by jwt.strategy.validate
   async getUserFromPayload(payload: TokenPayload) {

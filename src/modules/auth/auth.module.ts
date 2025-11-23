@@ -11,6 +11,7 @@ import { DatabaseModule } from 'src/database/database.module';
 @Module({
   imports: [
     PassportModule,
+    // ----------------------------
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -25,6 +26,8 @@ import { DatabaseModule } from 'src/database/database.module';
       inject: [ConfigService],
     }),
     DatabaseModule, // provides DatabaseService
+
+    //----------------------------
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],

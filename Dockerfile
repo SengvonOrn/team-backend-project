@@ -24,7 +24,8 @@
 # CMD ["npm", "run", "start:dev"]
 
 
-FROM node:22 AS builder
+# FROM node:22 AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /usr/src/app
 

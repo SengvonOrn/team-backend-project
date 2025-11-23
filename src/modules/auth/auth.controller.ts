@@ -23,15 +23,14 @@ import { Prisma, Role } from '@prisma/client';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // register
+  // register  http://localhost:3000/auth/register
   @Post('register')
   async register(@Body() dto: Prisma.UserCreateInput) {
     return this.authService.register(dto);
   }
 
+  // login using local strategy  http://localhost:3000/auth/login
 
-
-  // login using local strategy
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req: RequestWithUser, @Body() body: LoginDto) {
@@ -50,7 +49,7 @@ export class AuthController {
     return this.authService.getProfile(userId);
   }
 
-  //--------------------------------------------------------------------------->
+  //---------------------------------just testing------------------------------------------>
 
   @Get()
   findAll(@Ip() ip: String, @Query('role') role?: Role) {
@@ -63,7 +62,6 @@ export class AuthController {
   findOne(@Param('id') id: string) {
     return this.authService.findOne(+id);
   }
-
   // Update user by id
   @Patch(':id')
   update(
