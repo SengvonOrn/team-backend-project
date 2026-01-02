@@ -26,6 +26,7 @@ services:
       - '5432:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./uploads:/usr/src/app/uploads
     restart: always
 
     #---------------enable when we want with host access

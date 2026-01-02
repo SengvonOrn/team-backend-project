@@ -1,46 +1,66 @@
-// import { Injectable } from '@nestjs/common';
-// import { PassportStrategy } from '@nestjs/passport';
-// import { ExtractJwt, Strategy } from 'passport-jwt';
-
-// @Injectable()
-// export class JwtStrategy extends PassportStrategy(Strategy) {
-//   constructor() {
-//     super({
-//       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-//       ignoreExpiration: false, // reject expired tokens
-//       secretOrKey: 'sengvon1234', // 🔑 must match the one used to sign tokens
-//     });
-//   }
-
-//   validate(payload: any) {
-//     console.log('Inside JWT Stragy Validate');
-//     console.log(payload);
-//     return payload;
-//   }
-// }
-//---------------------------------------------------------------->
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { ConfigService } from '@nestjs/config';
 import { AuthService } from '../auth.service';
-import { TokenPayload } from '../types/oken-payload.type';
 
+export interface JwtPayload {
+  sub: number;
+  email: string;
+  name: string;
+  role: string;
+  iat?: number;
+  exp?: number;
+}
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly authService: AuthService) {
-    const secret = process.env.JWT_SECRET; // get verify id from env file
-    if (!secret) throw new Error('JWT_SECRET not defined');
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+  private readonly logger = new Logger(JwtStrategy.name);
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly authService: AuthService,
+  ) {
+    // ✅ STEP 1: Get and validate secret BEFORE super()
+    const jwtSecret = configService.get<string>('JWT_SECRET');
 
+    if (!jwtSecret) {
+      throw new Error(
+        'JWT_SECRET environment variable is not defined. Please check your .env file.',
+      );
+    }
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: secret,
-      passReqToCallback: false,
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+        ExtractJwt.fromUrlQueryParameter('token'),
+        (request) => {
+          if (request?.cookies?.accessToken) {
+            this.logger.debug('JWT extracted from cookie');
+            return request.cookies.accessToken;
+          }
+          return null;
+        },
+      ]),
+      ignoreExpiration: false,
+      secretOrKey: jwtSecret, 
     });
+
+    this.logger.log('JwtStrategy initialized successfully');
   }
 
-  async validate(payload: TokenPayload) {
-    const user = await this.authService.getUserFromPayload(payload);
-    if (!user) throw new NotFoundException('User not found');
-    return user; // req.user
+  async validate(payload: JwtPayload) {
+    this.logger.log(`JWT validation for user: ${payload.email}`);
+
+    try {
+      const user = await this.authService.getUserFromPayload(payload);
+
+      if (!user) {
+        this.logger.warn(`User not found: ${payload.email}`);
+        throw new UnauthorizedException('User not found');
+      }
+
+      return user;
+    } catch (error) {
+      this.logger.error(`JWT validation failed: ${error.message}`);
+      throw new UnauthorizedException('Invalid token');
+    }
   }
 }

@@ -1,12 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { UserService } from './users.service';
+import { Jwtguard } from 'src/common/guards/jwt.guard';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {} // 👈 dependency injection
-
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+  constructor(private readonly usersService: UserService) {}
+  @UseGuards(Jwtguard)
+  @Get('id')
+  async getUserProfile(@Param('id') id: number) {
+    return await this.usersService.getProfile(id);
   }
 }

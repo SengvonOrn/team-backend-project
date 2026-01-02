@@ -19,9 +19,13 @@ docker exec -it nestjs_api npx prisma migrate dev --name init_db
 # 2. Generate Prisma client inside Docker
 docker exec -it nestjs_api npx prisma generate
 
+docker exec -it nestjs_api npx prisma migrate reset
+
+docker exec -it nestjs_api npx prisma migrate dev --name add_email_unique
+
+
 # 3. For schema updates (e.g., make `name` optional)
 docker exec -it nestjs_api npx prisma migrate dev --name make_name_optional
-
 # 4. After migration, always regenerate Prisma client inside Docker
 docker exec -it nestjs_api npx prisma generate
 

@@ -1,0 +1,35 @@
+// {
+//   "name": "John",
+//   "username": "johndoe123",
+//   "status": "BANNED",
+//   "locations": [
+//     {
+//       "addressLine": "123 St",
+//       "city": "Phnom Penh",
+//       "state": "Phnom Penh",
+//       "country": "KH",
+//       "postalCode": "12000",
+//       "latitude": 11.5564,
+//       "longitude": 104.9282,
+//       "isDefault": true
+//     }
+//   ]
+// }
+
+{
+  "email": "user2@gmail.com",
+  "username": "johndoe123",
+  "name": "John Doe",
+  "status": "ACTIVE",
+  "profileImage": {
+    "id": 1,
+    "userId": 6,
+    "profile": "/uploads/profiles/1700000000-photo.jpg",
+    "thumbnail": "/uploads/profiles/thumb-1700000000-photo.jpg"
+  }
+}
+
+// {
+//     "email": "user2@gmail.com",
+//     "password": "12345678"
+// }

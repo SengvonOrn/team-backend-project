@@ -25,3 +25,6 @@ nest generate controller modules/products
 
 nest g class modules/users/entities/user.entity --no-spec
 
+
+------------------------------------------------------------------------------------->
+nest g res modules/urlimage
