@@ -334,6 +334,7 @@ export class UserService {
           comments: true,
           cartItems: true,
           locations: true,
+          store: true,
         },
       });
       if (!user) throw new UnauthorizedException('User not found');
@@ -381,6 +382,9 @@ export class UserService {
           take: 5,
           orderBy: { createdAt: 'desc' },
           include: { product: true },
+        },
+        store: {
+          include: { products: true },
         },
       },
     });

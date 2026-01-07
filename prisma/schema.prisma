@@ -73,6 +73,9 @@ model Customer {
   orders Order[]
 }
 
+
+
+
 //==========
 // UserLocations
 //==========
@@ -95,6 +98,8 @@ model UserLocation {
   @@index([userId])
 }
 
+
+
 ////////////////////
 /// STORE
 ////////////////////
@@ -111,7 +116,6 @@ model Store {
   state       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
   user        User     @relation(fields: [userId], references: [id])
   products    Product[]
 }
@@ -120,6 +124,8 @@ model Store {
 ////////////////////
 /// PRODUCT Product → ProductVariant → OrderItem → Order
 ////////////////////
+
+
 
 model Product {
   id          String   @id @default(uuid())

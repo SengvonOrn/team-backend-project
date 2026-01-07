@@ -25,41 +25,36 @@ export class StoresService {
   // CREATE STORE
   //==========================================================
 
- async create(createStoreDto: CreateStoreDto): Promise<IStore> {
-  const { userId } = createStoreDto;
+  async create(createStoreDto: CreateStoreDto): Promise<IStore> {
+    const { userId } = createStoreDto;
 
-  // safety check
-  const existingStore = await this.db.store.findUnique({
-    where: { userId },
-  });
-
-  if (existingStore) {
-    throw new BadRequestException('You already created a store');
-  }
-
-  try {
-    return await this.db.store.create({
-      data: createStoreDto,
+    // safety check
+    const existingStore = await this.db.store.findUnique({
+      where: { userId },
     });
-  } catch (error) {
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === 'P2002'
-    ) {
+
+    if (existingStore) {
       throw new BadRequestException('You already created a store');
     }
 
-    // log real error
-    console.error(error);
+    try {
+      return await this.db.store.create({
+        data: createStoreDto,
+      });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        throw new BadRequestException('You already created a store');
+      }
 
-    throw error; // let Nest handle others
+      // log real error
+      console.error(error);
+
+      throw error; // let Nest handle others
+    }
   }
-}
-
-
-
-
-
 
   //====================================================
   // FIND ALL
@@ -126,8 +121,6 @@ export class StoresService {
     return store as IStore;
   }
 
-  
-
   async findByUserId(
     userId: number,
     query: IStoreQuery,
@@ -137,7 +130,6 @@ export class StoresService {
     const user = await this.db.user.findUnique({
       where: { id: userId },
     });
-
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -153,7 +145,6 @@ export class StoresService {
 
       this.db.store.count({ where: { userId } }),
     ]);
-
     return {
       data: stores as IStore[],
       pagination: {
@@ -164,6 +155,9 @@ export class StoresService {
       },
     };
   }
+
+
+
   //==========================================================
   //
   //==========================================================

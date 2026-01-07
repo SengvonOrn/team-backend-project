@@ -17,6 +17,8 @@ import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { AuthGuard } from '@nestjs/passport';
+import { IStore, IStoreQuery } from 'src/interface/store.interface';
+import { IPaginatedResponse } from 'src/interface/product.interface';
 
 @Controller('stores')
 export class StoresController {
@@ -29,8 +31,11 @@ export class StoresController {
 
   @Post('register')
   @UseGuards(AuthGuard('jwt'))
-  create(@Req() req, @Body() dto: CreateStoreDto) {
-    dto.userId = req.user.id;
+  create(@Req() req: any, @Body() dto: CreateStoreDto): Promise<IStore> {
+    const userId = req.user.id;
+
+    dto.userId = userId;
+
     return this.storesService.create(dto);
   }
 
@@ -49,6 +54,27 @@ export class StoresController {
       page: Number(page),
       limit: Number(limit),
       search,
+    });
+  }
+
+  //============================================================
+  @Get('my-stores')
+  @UseGuards(AuthGuard('jwt'))
+  async getMyStores(
+    @Req() req: any,
+    @Query() query: IStoreQuery,
+  ): Promise<IPaginatedResponse<IStore>> {
+    const userId = req.user.id;
+    // Validate pagination params
+    const page = Math.max(1, parseInt(query.page?.toString() || '1'));
+    const limit = Math.max(
+      1,
+      Math.min(100, parseInt(query.limit?.toString() || '10')),
+    );
+    return this.storesService.findByUserId(userId, {
+      page,
+      limit,
+      search: query.search,
     });
   }
 
@@ -77,7 +103,8 @@ export class StoresController {
   //===============================================================
   // http://localhost:3000/api/stores/user/6
   //===============================================================
-  @Get('user/:userId')
+  @Get('stores/:userId')
+  @UseGuards(AuthGuard('jwt'))
   findByUserId(
     @Param('userId') userId: string,
     @Query('page') page: string = '1',
@@ -93,17 +120,16 @@ export class StoresController {
   // http://localhost:3000/api/stores/1
   //==============================================================
 
-  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
+  // @UseGuards(AuthGuard('jwt'))
   findOne(@Param(':id') id: string) {
     return this.storesService.findOne(id);
   }
 
-  
-
-  @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   update(@Param('id') id: string, @Body() updateStoreDto: UpdateStoreDto) {
+    console.log('PATCH BODY:', updateStoreDto);
     return this.storesService.update(id, updateStoreDto);
   }
 
