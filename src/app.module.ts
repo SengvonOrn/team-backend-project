@@ -22,6 +22,8 @@ import { ProductAttributesService } from './modules/product-attribute/product-at
 import { CommentsModule } from './modules/comment/comment.module';
 import { CommentsService } from './modules/comment/comment.service';
 import { CommentsController } from './modules/comment/comment.controller';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+// import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -57,6 +59,7 @@ import { CommentsController } from './modules/comment/comment.controller';
     ProductImagesModule,
     ProductAttributesModule,
     CommentsModule,
+    CloudinaryModule,
   ],
   controllers: [
     AppController,

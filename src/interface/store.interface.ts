@@ -6,10 +6,13 @@ export interface IStore {
   address: string | null;
   city: string | null;
   state: string | null;
+  logo?: string | null; // Add this line
   createdAt: Date;
   updatedAt: Date;
   products?: any[];
 }
+
+
 export interface IPaginatedResponse<T> {
   data: T[];
   pagination: {

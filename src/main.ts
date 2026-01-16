@@ -24,7 +24,9 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   });
 
+  //=========================================================
   // Session middleware (CRITICAL - must be before passport)
+  //=========================================================
   app.use(
     session({
       secret: process.env.SESSION_SECRET || 'your-session-secret-key',

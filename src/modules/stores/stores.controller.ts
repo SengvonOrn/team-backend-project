@@ -11,19 +11,20 @@ import {
   Query,
   UseGuards,
   Req,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { StoresService } from './stores.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { IStore, IStoreQuery } from 'src/interface/store.interface';
 import { IPaginatedResponse } from 'src/interface/product.interface';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 @Controller('stores')
 export class StoresController {
   constructor(private readonly storesService: StoresService) {}
-
   //==============================================================
   // Post
   //http://localhost:3000/api/stores
@@ -44,7 +45,7 @@ export class StoresController {
   //===================================================================
 
   @Get('stores')
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   findAll(
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '10',
@@ -92,6 +93,7 @@ export class StoresController {
       limit: Number(limit),
     });
   }
+
   //=================================================================
   //http://localhost:3000/api/stores/state
   //=================================================================
@@ -103,6 +105,7 @@ export class StoresController {
   //===============================================================
   // http://localhost:3000/api/stores/user/6
   //===============================================================
+
   @Get('stores/:userId')
   @UseGuards(AuthGuard('jwt'))
   findByUserId(
@@ -126,11 +129,24 @@ export class StoresController {
     return this.storesService.findOne(id);
   }
 
+  //==============================================================
+  // http://localhost:3000/api/stores/3d461b60-4a7c-4350-8c4c-072ade71704c
+  //==============================================================
+
   @Patch(':id')
-  @UseGuards(AuthGuard('jwt'))
-  update(@Param('id') id: string, @Body() updateStoreDto: UpdateStoreDto) {
-    console.log('PATCH BODY:', updateStoreDto);
-    return this.storesService.update(id, updateStoreDto);
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'logo', maxCount: 1 },
+      { name: 'banner', maxCount: 1 },
+    ]),
+  )
+  update(
+    @Param('id') id: string,
+    @Body() updateStoreDto: UpdateStoreDto,
+    @UploadedFiles()
+    files?: { logo?: Express.Multer.File[]; banner?: Express.Multer.File[] },
+  ) {
+    return this.storesService.updateStore(id, updateStoreDto, files);
   }
 
   //==============================================================

@@ -265,23 +265,23 @@ export class ProductImagesService {
       where: { id },
     });
 
-    if (!existingImage) {
-      throw new NotFoundException(PRODUCT_IMAGE_MESSAGES.IMAGE_NOT_FOUND);
-    }
+    // if (!existingImage) {
+    //   throw new NotFoundException(PRODUCT_IMAGE_MESSAGES.IMAGE_NOT_FOUND);
+    // }
 
     // If productId is being updated, verify new product exists
-    if (
-      updateProductImageDto.productId &&
-      updateProductImageDto.productId !== existingImage.productId
-    ) {
-      const product = await this.db.product.findUnique({
-        where: { id: updateProductImageDto.productId },
-      });
+    // if (
+    //   updateProductImageDto.productId &&
+    //   updateProductImageDto.productId !== existingImage.productId
+    // ) {
+    //   const product = await this.db.product.findUnique({
+    //     where: { id: updateProductImageDto.productId },
+    //   });
 
-      if (!product) {
-        throw new NotFoundException(PRODUCT_IMAGE_MESSAGES.PRODUCT_NOT_FOUND);
-      }
-    }
+    //   if (!product) {
+    //     throw new NotFoundException(PRODUCT_IMAGE_MESSAGES.PRODUCT_NOT_FOUND);
+    //   }
+    // }
 
     const updated = await this.db.productImage.update({
       where: { id },

@@ -29,4 +29,8 @@ docker exec -it nestjs_api npx prisma migrate dev --name make_name_optional
 # 4. After migration, always regenerate Prisma client inside Docker
 docker exec -it nestjs_api npx prisma generate
 
+
+docker exec -it nestjs_api npx prisma studio --hostname 0.0.0.0 --port 5555
+
+
 ------------------------------------------------------------------->
